@@ -55,4 +55,9 @@ def apply_rules(state: dict):
     updates["activities"] = activities
     updates["agent_trace"] = agent_trace
 
+    # Ensure mode is always set
+    if "mode" not in updates:
+        updates["mode"] = "balanced"
+        state.agent_trace.append("No critical constraints → balanced mode")
+
     return updates
