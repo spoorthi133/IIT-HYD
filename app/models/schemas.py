@@ -39,3 +39,5 @@ class Constraints(BaseModel):
     space: str
     exam_week: bool
     intent: str  # "fat_loss" | "exercise" | "meditation"
+
+

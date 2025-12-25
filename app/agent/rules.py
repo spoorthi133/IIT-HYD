@@ -3,10 +3,11 @@ def apply_rules(state: dict):
     p = state["previous_constraints"]
 
     updates = {}
-
     agent_trace = state["agent_trace"]
 
+    # -------------------------
     # Constraint diff
+    # -------------------------
     if p:
         diff = {}
         for field in c.__dict__:
@@ -18,7 +19,9 @@ def apply_rules(state: dict):
             updates["constraint_diff"] = diff
             agent_trace.append("Constraints changed")
 
-    # Rules
+    # -------------------------
+    # Rule-based mode selection
+    # -------------------------
     if c.exam_week:
         updates["mode"] = "maintenance"
         agent_trace.append("Exam week detected → maintenance mode")
@@ -35,12 +38,14 @@ def apply_rules(state: dict):
         updates["mode"] = "maintenance"
         agent_trace.append("Low energy → recovery-focused plan")
 
-    # Default fallback (IMPORTANT)
+    # Default fallback
     if "mode" not in updates:
         updates["mode"] = "normal"
         agent_trace.append("Default → normal mode")
 
-    # Intent-based activities
+    # -------------------------
+    # Intent-based activity selection
+    # -------------------------
     from app.agent.activity_library import ACTIVITY_LIBRARY
 
     intent = c.intent
@@ -48,16 +53,32 @@ def apply_rules(state: dict):
 
     agent_trace.append(f"Intent detected: {intent}")
 
-    activities = ACTIVITY_LIBRARY.get(intent, {}).get(
+    available_activities = ACTIVITY_LIBRARY.get(intent, {}).get(
         energy, ["Gentle stretching"]
     )
 
-    updates["activities"] = activities
-    updates["agent_trace"] = agent_trace
+    # 🔥 Time-aware exercise volume
+    if c.time_minutes >= 40:
+        count = 4
+    elif c.time_minutes >= 25:
+        count = 3
+    else:
+        count = 1
 
-    # Ensure mode is always set
-    if "mode" not in updates:
-        updates["mode"] = "balanced"
-        state.agent_trace.append("No critical constraints → balanced mode")
+    # 🔁 Rotation memory
+    history = state.get("activity_history", [])
+
+    rotated = [a for a in available_activities if a not in history]
+
+    if rotated:
+        selected = rotated[:count]
+        agent_trace.append("Activity rotation applied")
+    else:
+        selected = available_activities[:count]
+        agent_trace.append("Rotation exhausted → fallback activities")
+
+    updates["activities"] = selected
+    updates["activity_history"] = selected
+    updates["agent_trace"] = agent_trace
 
     return updates
