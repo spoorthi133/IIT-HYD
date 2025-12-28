@@ -1,58 +1,123 @@
-# 🧠 Wellness Planner
+# 🧠 Constraint-Based Wellness Agent – Backend System
 
-A constraint-first, agentic wellness planning system that designs realistic
-fitness and mental wellness routines based on user context and limitations.
+A b intelligent wellness planning system that **designs health routines around real-life constraints**, not ideal goals.
 
-> Design health around life, not life around health.
+Instead of asking *“What is your fitness goal?”*, this agent first asks:
+**“What is actually possible right now?”**
 
----
-
-## ✨ Features
-
-- Constraint-aware planning (time, energy, mental load, space, exam week)
-- Deterministic agent logic (no LLM hallucinations)
-- Transparent agent reasoning (traceable decisions)
-- Three adaptive modes:
-  - Maintenance Mode
-  - Micro Mode
-  - Normal Mode
-- Weekly wellness planning
-- Modern React frontend (LeetCode-inspired UI)
+The system adapts plans dynamically based on **time, energy, mental load, space, exams, and user intent**.
 
 ---
 
-## 🏗️ Project Structure
+## 🎯 Core Idea
 
-wellness-planner/
-├── backend/ # FastAPI + LangGraph
-├── frontend/ # Vite + React
+Most wellness apps assume:
+- unlimited motivation
+- plenty of time
+- high energy
 
-yaml
-Copy code
+This agent does the opposite.
+
+It is **constraint-first**, meaning:
+- life comes first
+- wellness fits *inside* life
 
 ---
 
-## 🧪 Tech Stack
+## 🚀 Features
+
+### 🔧 Constraint-Based Planning
+Plans are generated using:
+- Available time (micro / normal / extended)
+- Energy level
+- Mental load
+- Exam week detection
+- Available space
+- User intent (fat loss, exercise, recovery, relaxation)
+
+---
+
+### 🔁 Activity Rotation Memory
+- Avoids repeating the same activities daily
+- Feels more intelligent and human
+- Tracks previously suggested exercises
+- Rotates activities automatically
+
+---
+
+### 🗓 Weekly Planner Intelligence
+- Generates adaptive weekly plans
+- Fatigue simulation over days
+- Time pressure variation
+- Adjusts activity volume automatically
+- Supports realistic academic schedules
+
+---
+
+### 🔍 Constraint Change Diff
+- Detects what changed from last request
+- Explains why the plan changed
+- Improves transparency and trust
+
+---
+
+### 🧠 Explainable Agent Reasoning
+- Agent traces every decision
+- Shows exactly *why* a plan was chosen
+- Easy to demo and judge-friendly
+
+---
+
+
+## 🛠 Tech Stack
 
 ### Backend
 - FastAPI
-- LangGraph
-- Python 3.10+
+- LangGraph (agent orchestration)
+- Pydantic
+- Rule-based reasoning engine
+
 
 ### Frontend
-- React
-- Vite
-- CSS
+- Vite React
+- 
+### Optional AI Layer
+- LLM-ready architecture
+- Can be toggled ON/OFF
+- Safe for demos without API dependency
 
 ---
 
-## 🚀 How to Run the Project Locally
 
-### 1️⃣ Backend
+---
+
+## ▶️ How to Run
+
+### 1️⃣ Setup Backend
 
 ```bash
 cd backend
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-uvicorn main:app --reload
+uvicorn app.main:app --reload
+```
+Server runs at:
+
+http://localhost:8000
+
+
+API docs:
+
+http://localhost:8000/docs
+
+
+
+### Setup Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+
